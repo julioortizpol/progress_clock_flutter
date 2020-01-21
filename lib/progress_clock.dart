@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_clock_helper/model.dart';
 import 'draw_progress_painter.dart';
+import 'constans.dart';
 
 import 'package:vector_math/vector_math_64.dart' show radians;
 
@@ -102,29 +103,28 @@ class _ProgressClockState extends State<ProgressClock>
             backgroundColor: Color(0xFFD2E3FC),
           )
         : Theme.of(context).copyWith(
-            primaryColor: Color(0xFFD2E3FC),
+            primaryColor: Color(0xFF202335),
             highlightColor: Color(0xFF4285F4),
             accentColor: Color(0xFF8AB4F8),
             backgroundColor: Color(0xFF0A0D21),
           );
 
     final weatherInfo = DefaultTextStyle(
-      style: TextStyle(color: customTheme.primaryColor),
+      style: kDefaultTextStyle,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(_temperature),
-          Text(_temperatureRange),
-          Text(_condition),
           Text(_location),
+          Text("$_temperature, $_condition"),
         ],
       ),
     );
 
     return MaterialApp(
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: Color(0xFF0A0D21),
-        primaryColor: Color(0xFF0A0D21),
+        scaffoldBackgroundColor: customTheme.backgroundColor,
+        primaryColor: customTheme.primaryColor,
       ),
       home: Scaffold(
         appBar: AppBar(
@@ -152,7 +152,7 @@ class _ProgressClockState extends State<ProgressClock>
               ),
               Expanded(
                 child: Center(
-                  child: Text("klk"),
+                  child: weatherInfo,
                 ),
               )
             ],
