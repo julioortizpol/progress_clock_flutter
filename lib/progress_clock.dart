@@ -1,12 +1,15 @@
 import 'dart:async';
+import 'progress_painter.dart';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_clock_helper/model.dart';
+import 'draw_progress_painter.dart';
 
 import 'package:vector_math/vector_math_64.dart' show radians;
 
 final radiansPerTick = radians(360 / 60);
-final radiansPerHour = radians(360 / 12);
+final radiansPerHour = radians(360 / 24);
 
 class ProgressClock extends StatefulWidget {
   const ProgressClock(this.model);
@@ -17,7 +20,8 @@ class ProgressClock extends StatefulWidget {
   _ProgressClockState createState() => _ProgressClockState();
 }
 
-class _ProgressClockState extends State<ProgressClock> {
+class _ProgressClockState extends State<ProgressClock>
+    with SingleTickerProviderStateMixin {
   var _now = DateTime.now();
   var _temperature = '';
   var _temperatureRange = '';
@@ -32,6 +36,20 @@ class _ProgressClockState extends State<ProgressClock> {
     // Set the initial values.
     _updateTime();
     _updateModel();
+  }
+
+  progressView({Widget child, double actualState}) {
+    return CustomPaint(
+      child: child,
+      foregroundPainter: ProgressPainter(
+        defaultCircleColor: Colors.amber,
+        percentageCompletedColor: Colors.green,
+        actualPercentage: actualState,
+        circleWidth: 5.0,
+        progressText: _now.second.toString(),
+        backgroundColor: Color(0xFF0A0D21),
+      ),
+    );
   }
 
   @override
@@ -73,10 +91,44 @@ class _ProgressClockState extends State<ProgressClock> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Text(
-      "${_now.hour} : ${_now.minute} : ${_now.second}",
-      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
-    ));
+    return MaterialApp(
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: Color(0xFF0A0D21),
+        primaryColor: Color(0xFF0A0D21),
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("Progres_Clock"),
+        ),
+        body: Container(
+          alignment: Alignment.center,
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: ProgressTime(
+                  actualState: _now.second * radiansPerTick,
+                  percentageCompletedColor: Colors.blue,
+                  actualStateText: _now.second.toString(),
+                  child: ProgressTime(
+                      actualState: _now.minute * radiansPerTick,
+                      percentageCompletedColor: Colors.green,
+                      actualStateText: _now.minute.toString(),
+                      child: ProgressTime(
+                        actualState: _now.hour * radiansPerHour,
+                        actualStateText: _now.hour.toString(),
+                        percentageCompletedColor: Colors.red,
+                      )),
+                ),
+              ),
+              Expanded(
+                child: Center(
+                  child: Text("klk"),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

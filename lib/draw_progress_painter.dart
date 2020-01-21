@@ -2,11 +2,16 @@ import 'progress_painter.dart';
 import 'package:flutter/material.dart';
 
 class ProgressTime extends StatelessWidget {
-  Color percentageCompletedColor;
-  double actualState;
-  Widget child;
+  final Color percentageCompletedColor;
+  final double actualState;
+  final Widget child;
+  final String actualStateText;
 
-  ProgressTime(this.child, this.actualState, this.percentageCompletedColor);
+  ProgressTime(
+      {this.child,
+      this.actualStateText,
+      @required this.actualState,
+      @required @required this.percentageCompletedColor});
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +23,11 @@ class ProgressTime extends StatelessWidget {
       child: CustomPaint(
         child: child,
         foregroundPainter: ProgressPainter(
-          defaultCircleColor: Colors.amber,
+          defaultCircleColor: Color(0xff4C4F5D),
           percentageCompletedColor: percentageCompletedColor,
           actualPercentage: actualState,
-          circleWidth: 5.0,
-          progressText: actualState.toString(),
+          circleWidth: 1.0,
+          progressText: actualStateText,
           backgroundColor: Color(0xFF0A0D21),
         ),
       ),
