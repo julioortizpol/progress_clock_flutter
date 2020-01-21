@@ -91,6 +91,36 @@ class _ProgressClockState extends State<ProgressClock>
 
   @override
   Widget build(BuildContext context) {
+    final customTheme = Theme.of(context).brightness == Brightness.light
+        ? Theme.of(context).copyWith(
+            // Hour hand.
+            primaryColor: Color(0xFF4285F4),
+            // Minute hand.
+            highlightColor: Color(0xFF8AB4F8),
+            // Second hand.
+            accentColor: Color(0xFF669DF6),
+            backgroundColor: Color(0xFFD2E3FC),
+          )
+        : Theme.of(context).copyWith(
+            primaryColor: Color(0xFFD2E3FC),
+            highlightColor: Color(0xFF4285F4),
+            accentColor: Color(0xFF8AB4F8),
+            backgroundColor: Color(0xFF0A0D21),
+          );
+
+    final weatherInfo = DefaultTextStyle(
+      style: TextStyle(color: customTheme.primaryColor),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(_temperature),
+          Text(_temperatureRange),
+          Text(_condition),
+          Text(_location),
+        ],
+      ),
+    );
+
     return MaterialApp(
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Color(0xFF0A0D21),
