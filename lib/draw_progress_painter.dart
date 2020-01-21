@@ -7,13 +7,17 @@ class ProgressTime extends StatelessWidget {
   final Widget child;
   final String actualStateText;
   final TextStyle textStyle;
+  final Color desfaultCircleColor;
+  final Color backgroundColor;
 
   ProgressTime(
       {this.child,
       this.actualStateText,
       @required this.actualState,
       @required this.textStyle,
-      @required this.percentageCompletedColor});
+      @required this.desfaultCircleColor,
+      @required this.percentageCompletedColor,
+      @required this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +30,12 @@ class ProgressTime extends StatelessWidget {
         child: child,
         foregroundPainter: ProgressPainter(
           textStyle: textStyle,
-          defaultCircleColor: Color(0xff4C4F5D),
+          defaultCircleColor: desfaultCircleColor,
           percentageCompletedColor: percentageCompletedColor,
           actualPercentage: actualState,
           circleWidth: 1.0,
           progressText: actualStateText,
-          backgroundColor: Color(0xFF0A0D21),
+          backgroundColor: backgroundColor,
         ),
       ),
     );

@@ -111,6 +111,11 @@ class _ProgressClockState extends State<ProgressClock>
         ? kProgressTextStyleLight
         : kProgressTextStyleDark;
 
+    final Color defaultCircleColor =
+        Theme.of(context).brightness == Brightness.light
+            ? Color(0xffA9B7CC)
+            : Color(0xff4C4F5D);
+
     return MaterialApp(
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: customTheme.backgroundColor,
@@ -126,16 +131,22 @@ class _ProgressClockState extends State<ProgressClock>
             children: <Widget>[
               Expanded(
                 child: ProgressTime(
+                  backgroundColor: customTheme.backgroundColor,
+                  desfaultCircleColor: defaultCircleColor,
                   actualState: _now.second * radiansPerTick,
                   percentageCompletedColor: Colors.blue,
                   textStyle: textStyle,
                   actualStateText: _now.second.toString(),
                   child: ProgressTime(
+                      backgroundColor: customTheme.backgroundColor,
+                      desfaultCircleColor: defaultCircleColor,
                       textStyle: textStyle,
                       actualState: _now.minute * radiansPerTick,
                       percentageCompletedColor: Colors.green,
                       actualStateText: _now.minute.toString(),
                       child: ProgressTime(
+                        backgroundColor: customTheme.backgroundColor,
+                        desfaultCircleColor: defaultCircleColor,
                         textStyle: textStyle,
                         actualState: _now.hour * radiansPerHour,
                         actualStateText: _now.hour.toString(),
