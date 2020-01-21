@@ -6,6 +6,7 @@ class ProgressPainter extends CustomPainter {
   Color defaultCircleColor;
   Color percentageCompletedColor;
   Color backgroundColor;
+  TextStyle textStyle;
   double actualPercentage;
   double circleWidth;
   String progressText;
@@ -16,7 +17,8 @@ class ProgressPainter extends CustomPainter {
       @required this.actualPercentage,
       @required this.circleWidth,
       @required this.progressText,
-      @required this.backgroundColor});
+      @required this.backgroundColor,
+      @required this.textStyle});
 
   newPaint(Color color, double circleWidth, style) {
     return Paint()
@@ -62,7 +64,7 @@ class ProgressPainter extends CustomPainter {
   TextPainter createTextPainter() {
     final textSpan = TextSpan(
       text: progressText,
-      style: kProgressTextStyle,
+      style: textStyle,
     );
 
     return TextPainter(

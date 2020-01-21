@@ -25,7 +25,6 @@ class _ProgressClockState extends State<ProgressClock>
     with SingleTickerProviderStateMixin {
   var _now = DateTime.now();
   var _temperature = '';
-  var _temperatureRange = '';
   var _condition = '';
   var _location = '';
   Timer _timer;
@@ -37,20 +36,6 @@ class _ProgressClockState extends State<ProgressClock>
     // Set the initial values.
     _updateTime();
     _updateModel();
-  }
-
-  progressView({Widget child, double actualState}) {
-    return CustomPaint(
-      child: child,
-      foregroundPainter: ProgressPainter(
-        defaultCircleColor: Colors.amber,
-        percentageCompletedColor: Colors.green,
-        actualPercentage: actualState,
-        circleWidth: 5.0,
-        progressText: _now.second.toString(),
-        backgroundColor: Color(0xFF0A0D21),
-      ),
-    );
   }
 
   @override
@@ -72,7 +57,6 @@ class _ProgressClockState extends State<ProgressClock>
   void _updateModel() {
     setState(() {
       _temperature = widget.model.temperatureString;
-      _temperatureRange = '(${widget.model.low} - ${widget.model.highString})';
       _condition = widget.model.weatherString;
       _location = widget.model.location;
     });
@@ -110,7 +94,9 @@ class _ProgressClockState extends State<ProgressClock>
           );
 
     final weatherInfo = DefaultTextStyle(
-      style: kDefaultTextStyle,
+      style: Theme.of(context).brightness == Brightness.light
+          ? kDefaultTextStyleLight
+          : kDefaultTextStyleDark,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -120,6 +106,10 @@ class _ProgressClockState extends State<ProgressClock>
         ],
       ),
     );
+
+    final TextStyle textStyle = Theme.of(context).brightness == Brightness.light
+        ? kProgressTextStyleLight
+        : kProgressTextStyleDark;
 
     return MaterialApp(
       theme: ThemeData.dark().copyWith(
@@ -138,12 +128,15 @@ class _ProgressClockState extends State<ProgressClock>
                 child: ProgressTime(
                   actualState: _now.second * radiansPerTick,
                   percentageCompletedColor: Colors.blue,
+                  textStyle: textStyle,
                   actualStateText: _now.second.toString(),
                   child: ProgressTime(
+                      textStyle: textStyle,
                       actualState: _now.minute * radiansPerTick,
                       percentageCompletedColor: Colors.green,
                       actualStateText: _now.minute.toString(),
                       child: ProgressTime(
+                        textStyle: textStyle,
                         actualState: _now.hour * radiansPerHour,
                         actualStateText: _now.hour.toString(),
                         percentageCompletedColor: Colors.red,
