@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'progress_painter.dart';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_clock_helper/model.dart';
